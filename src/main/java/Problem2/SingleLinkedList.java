@@ -69,6 +69,33 @@ public class SingleLinkedList {
 
     // reverse the linked list RECURSIVELY
     public void reverse() {
-        // homework
+
+        //if our list is empty, return null
+        if(head.next==null){
+            return;
+        }
+
+        //set our head to the result of the reversed list
+        head.next = reverse(head.next);
+    }
+
+    //https://www.youtube.com/watch?v=BMfqGJTcoms
+    private ListNode reverse(ListNode node){
+
+        //as long as there is another node in the list
+        if(node.next!=null){
+            //save the next node in the list
+            ListNode next = node.next;
+            //make our current node no longer point to it
+            node.next = null;
+            //recursively save and remove pointers to the nodes in the rest of the list
+            ListNode rest = reverse(next);
+            //set the node we saved earlier equal to this node (the reversal part)
+            next.next = node;
+            //give the rest of the nodes to the earlier call to then be reversed
+            return rest;
+        }
+        //get the last node (head will eventually point to this)
+        return node;
     }
 }
