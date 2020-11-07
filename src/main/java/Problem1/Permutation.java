@@ -1,55 +1,59 @@
 package Problem1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Permutation {
     public static List<List<Integer>> permute(int[] nums) {
-
-        //put a number in the front, check how many permutations are left
-        //put the next number onto it, check how many permutations are left
-        //loop through each permutation for each number in the array
-        //we will have as many outer lists as nums in nums
-
-        //be checking the permutations of all the other numbers that arent the number we are looking at
-
-        //be creating new lists when we check the next permutations
-
-        //lecture code 11/2/2020
         List<List<Integer>> result = new ArrayList<>();
-        if(nums==null || nums.length==0){
-            return result;
+        if(nums==null||nums.length==0){
+            result.add(new ArrayList<Integer>());
         }
-        permute(nums, 0, result);
+        else{
+            permute(nums, 0,  result);
+        }
+
         return result;
     }
 
-    // [1, 2, 3]
-    // [2, 1, 3]
-    // [3, 2, 1]
 
-
-    //lecture code 11/2/2020
+    //https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/?ref=rp
+    //used monday lecture for basic algorithm
     private static void permute(int[] nums, int position, List<List<Integer>> result){
 
-        //lecture code 11/2/2020
+
         if(position==nums.length-1) {
-            List<Integer> oneResult = new ArrayList<>();
+            List<Integer> oneResult = new ArrayList<Integer>();
+            //copy the array to a new list
             for (int i = 0; i < nums.length; i++) {
                 oneResult.add(nums[i]);
             }
+            //add the list to our result and stop this method
+            result.add(oneResult);
+            return;
         }
-        // put number at position in the front
-        swap(nums, position);
-        // call the same private permute with position+1
-        permute(nums, position+1, result);
-        // put the number back to its original position
-        swap(nums, position);
+
+        //if we arent at the end of the method array, swap
+        //geeksforgeeks fixed my loop problem here, was accidentally looping too far
+        //loops from our current pos to the end
+        //swaps the index with the pos and runs another recursive call
+        //      (which will also keep doing the same to finish a "branch")
+        //swaps back once the branch is done
+        for (int i = position; i <= nums.length-1; i++) {
+            // put number at position in the front
+            swap(nums, position, i);
+            // call the same private permute with position+1
+            permute(nums, position+1, result);
+            // put the number back to its original position
+            swap(nums, position, i);
+        }
+
     }
 
-    private static void swap(int[] nums, int pos) {
-        int temp = nums[0];
-        nums[0] = nums[pos];
+    private static void swap(int[] nums, int pos, int instance) {
+        int temp = nums[instance];
+        nums[instance] = nums[pos];
         nums[pos] = temp;
     }
 }
